@@ -1,4 +1,6 @@
 """Generate Markov text from text files."""
+import sys
+input_path = sys.argv[1]
 
 from random import choice
 
@@ -15,7 +17,9 @@ def open_and_read_file(file_path):
 
 
     return contents
-print(open_and_read_file("green-eggs.txt"))
+
+input_text = open_and_read_file(input_path)
+
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -41,10 +45,15 @@ def make_chains(text_string):
         >>> chains[('there','juanita')]
         [None]
     """
+
+    n= int(input("How many n-grams do you want?"))
     words = text_string.split()
     chains = {}
-    for i in range(len(words)- 2):
-        key = (words[i], words[i+1])
+    n_list=[]
+    for i in range(0, len(words)-n):
+        n_list.append(words[i])
+        key = (n_list[0:n-1])
+        #key = ([0:n-1]
         value= words[i + 2]
 
         if key in chains:
@@ -57,7 +66,7 @@ def make_chains(text_string):
     #print (chains)
     return chains
 #print("$$$$$$$$$$$$$$$$$$")
-make_chains(open_and_read_file("green-eggs.txt"))
+make_chains(open_and_read_file(input_path))
 
 def make_text(chains):
     """Return text from chains."""
@@ -96,10 +105,9 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
 
+print(open_and_read_file(input_path))
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
 chains = make_chains(input_text)
